@@ -1,0 +1,21 @@
+/*
+ * LG Electronics MT6765 HDK camera device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+&i2c5 {
+	usb_type_c_mtk:usb_type_c@4e {
+		compatible = "mediatek,usb_type_c";
+		reg = <0x4e>;
+		status = "okay";
+	};
+
+};
+
+&mt6370_typec {
+	mt6370pd,intr_gpio = <&pio 91 0x0>;
+	mt6370pd,intr_gpio_num = <91>;
+};

@@ -1,0 +1,9 @@
+#
+# LGE touch core configuration
+#
+
+if INPUT_TOUCHSCREEN
+
+source "drivers/input/touchscreen/lge/novatek/nt36526/Kconfig"
+
+endif

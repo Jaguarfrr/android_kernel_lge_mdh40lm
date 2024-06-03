@@ -1,0 +1,69 @@
+/*
+ * LG Electronics MT6765 HDK misc device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+&keypad {
+	pinctrl-names = "default";
+	pinctrl-0 = <&kpd_pins_default>;
+};
+
+&pio {
+	kpd_pins_default: kpdgpiodefault {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO93__FUNC_KPCOL0>;
+			bias-pull-up = <MTK_PUPD_SET_R1R0_10>;
+			output-low;
+			input-schmitt-enable;
+		};
+	};
+};
+
+&main_pmic {
+	mt6357keys {
+		mediatek,long-press-mode = <2>;
+
+		home {
+			linux,keycodes = <114>;
+			wakeup-source;
+		};
+	};
+};
+
+&odm {
+	usb_id {
+		compatible = "lge,usb-id";
+		io-channels = <&auxadc 4>;
+		io-channel-names = "usb-id";
+		interconnects = <&auxadc 4>;
+		charger = <&mtk_charger_type>;
+		bootmode = <&chosen>;
+                  
+       pinctrl-names = "default", "transition", "adc";
+		pinctrl-0 = <&usb_id_default>;
+		pinctrl-1 = <&usb_id_transition>;
+		pinctrl-2 = <&usb_id_adc>;
+		delay = <50>;
+
+		/*
+		 * Pull-up : 1.8V 150k (1%)
+		 * Pull-down : 680k (1%)
+		 * ID : 56k (20%), 130k (20%), 910k (20%)
+		 * ADC Accuracy : +-10mV
+		 */
+		range = <
+		/*	min 	max 	type	*/
+			393	549	56	/* LT_CABLE_56K */
+			676	855	130	/* LT_CABLE_130K */
+			1253	1347	910	/* LT_CABLE_910K */
+			1348	1500	0	/* USB_CABLE_400MA */
+		>;
+
+		embedded-battery;
+		debounce = <5>;
+	};
+};
+
+

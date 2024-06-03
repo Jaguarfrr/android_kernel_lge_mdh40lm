@@ -1,0 +1,392 @@
+/*
+ * LG Electronics MT6765 HDK power device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+&mt6370_pmu {
+	mt6370,intr_gpio_num = <11>; /* direct defined GPIO num */
+	mt6370,intr_gpio = <&pio 11 0x0>;
+};
+
+&mt6370_chg {
+	mivr = <4400000>;	/* uV */
+	cv = <4400000>;		/* uA */
+	ircmp_resistor = <0>;   /* uohm */
+	ircmp_vclamp = <0>;     /* uV */
+	bc12_sel = <1>;
+	ieoc = <150000>;	/* uA */
+
+	charger-controller = <&chgctrl>;
+};
+
+&mtk_charger_type {
+	charger-controller = <&chgctrl>;
+};
+
+&lk_charger {
+	enable_anime;
+	max_charger_voltage = <6500000>;
+	fast_charge_voltage = <2800000>;
+
+	ac_charger_current = <1500000>;
+	ac_charger_input_current = <1500000>;
+
+	led_brightness = <200>;
+	blinking_times = <3>;
+	blinking_period = <450>;
+};
+
+&charger {
+	battery_cv = <4400000>;
+	max_charger_voltage = <6500000>;
+	min_charger_voltage = <4400000>;
+
+	/* charging current */
+	usb_charger_current = <500000>;
+	ac_charger_current = <2000000>;
+	ac_charger_input_current = <2000000>;
+	charging_host_charger_current = <1500000>;
+
+	charger-controller = <&chgctrl>;
+};
+
+&mtk_gauge {
+	/*	Configures whether using embedded battery or not.*/
+	EMBEDDED_SEL = <(0)>;
+	/* SOC_ZERO_PERCENT shutdown_cond  1:enable , 0:disable */
+	SHUTDOWN_GAUGE0 = <(0)>;
+
+	/*
+	 * Below setting is cut off 3.3 parameter.
+	 * If use cutoff 3.4V, use MTK original parameter
+	 */
+	/*	vboot voltage for gauge 0%.*/
+	PMIC_MIN_VOL = <(32500)>;
+	/*	shutdown gauge 0% voltage*/
+	SHUTDOWN_GAUGE0_VOLTAGE = <(33000)>;
+	/*	System shut down voltage.*/
+	Q_MAX_SYS_VOLTAGE_BAT0 = <(3250)>;
+	/*	System shut down voltage.*/
+	Q_MAX_SYS_VOLTAGE_BAT1 = <(3250)>;
+	/*	System shut down voltage.*/
+	Q_MAX_SYS_VOLTAGE_BAT2 = <(3250)>;
+	/*	System shut down voltage.*/
+	Q_MAX_SYS_VOLTAGE_BAT3 = <(3250)>;
+	/* no used. Ignore. Just for align with shutdown condition 3.3v */
+	SHUTDOWN_GAUGE1_VBAT = <(33000)>;
+	/* Related to low voltage tracking */
+	VBAT2_DET_VOLTAGE1 = <(33500)>;
+	VBAT2_DET_VOLTAGE2 = <(31000)>;
+	VBAT2_DET_VOLTAGE3 = <(34000)>;
+	/* cut off scenario. below setting means that 2% shutdown with 3.3v. */
+	UI_LOW_LIMIT_VTH0 = <(33000)>;
+	UI_LOW_LIMIT_VTH1 = <(33000)>;
+	UI_LOW_LIMIT_VTH2 = <(33000)>;
+	UI_LOW_LIMIT_VTH3 = <(33000)>;
+	UI_LOW_LIMIT_VTH4 = <(33000)>;
+
+	g_Q_MAX_SYS_VOLTAGE = <3250 3250 3250 3250>;
+	g_PMIC_MIN_VOL = <32500 32500 32500 32500
+			32500 32500 32500 32500
+			32500 32500 32500 32500
+			31200 31200 31200 31200
+			30000 30000 30000 30000
+			30000 30000 30000 30000
+			30000 30000 30000 30000
+			30000 30000 30000 30000
+			30000 30000 30000 30000
+			30000 30000 30000 30000>;
+
+	g_QMAX_SYS_VOL = <32500 32500 32500 32500
+			32500 32500 32500 32500
+			32500 32500 32500 32500
+			31900 31900 31900 31900
+			31800 31800 31800 31800
+			32500 32500 32500 32500
+			32500 32500 32500 32500
+			32500 32500 32500 32500
+			32500 32500 32500 32500
+			32500 32500 32500 32500>;
+	/*
+	 * Above setting value is cut off 3.3 parameter.
+	 * If use cutoff 3.4V, use MTK original parameter
+	 */
+
+	/*      Pseudo 100% percentage at T0.*/
+	g_FG_PSEUDO100_T0 = <(95)>;
+	/*      Pseudo 100% percentage at T1.*/
+	g_FG_PSEUDO100_T1 = <(95)>;
+	/*      Pseudo 100% percentage at T2.*/
+	g_FG_PSEUDO100_T2 = <(95)>;
+	/*      Pseudo 100% percentage at T3.*/
+	g_FG_PSEUDO100_T3 = <(95)>;
+	/*      Pseudo 100% percentage at T4.*/
+	g_FG_PSEUDO100_T4 = <(95)>;
+
+	/* If ACTIVE_TABLE == x, use g_FG_PSEUDO100 instead of g_FG_PSEUDO100_TX*/
+	g_FG_PSEUDO100 = <95 95 95 95
+		95 95 95 95
+		95 95 95 95
+		95 95 95 95
+		95 95 95 95
+		95 95 95 95
+		95 95 95 95
+		95 95 95 95
+		95 95 95 95
+		95 95 95 95>;
+
+	PSEUDO1_SEL = <(0)>;
+
+	g_FG_PSEUDO1 = <1  1  1  1
+			1  1  1  1
+			1  1  1  1
+			1  1  1  1
+			1  1  1  1
+			1  1  1  1
+			1  1  1  1
+			1  1  1  1
+			1  1  1  1
+			1  1  1  1>;
+
+	DIFFERENCE_FULLOCV_ITH = <(220)>;
+	DIFFERENCE_VOLTAGE_UPDATE = <(-1)>;
+	AGING1_UPDATE_SOC = <(10)>;
+	AGING1_LOAD_SOC = <(50)>;
+	AGING_TEMP_DIFF = <(15)>;
+	AGING_TEMP_LOW_LIMIT = <(15)>;
+	AGING_TEMP_HIGH_LIMIT = <(45)>;
+	ZCV_SUSPEND_TIME = <(9)>;
+	SLEEP_CURRENT_AVG = <(500)>; /*0.1mA*/
+
+	CAR_TUNE_VALUE = <(100)>;
+	HWOCV_OLDOCV_DIFF_CHR = <(2000)>;
+	SWOCV_OLDOCV_DIFF_CHR = <(2000)>;
+	VIR_OLDOCV_DIFF_EMB = <(2000)>;
+	VIR_OLDOCV_DIFF_EMB_LT = <(2000)>;
+
+	POWER_ON_CAR_CHR = <(20)>;
+	POWER_ON_CAR_NOCHR = <(-43)>;
+
+	/*The ui_soc will keep 100% until SOC drop X percents after unplugged.*/
+	KEEP_100_PERCENT = <(3)>;
+	KEEP_100_PERCENT_MINSOC = <(9400)>;
+
+	/* battery temperature table type - NTC table */
+	/* TO DO : preparing mtk implement*/
+	RBAT_TYPE = <(68)>;
+	RBAT_PULL_UP_R = <(62000)>;
+	rbat_temperature_table_num = <21>;
+	rbat_battery_temperature =
+	<
+	        (-20) 601129
+		(-15) 515896
+		(-10) 362915
+		(-5)  280636
+		0     213810
+		5     171815
+		10    140146
+		15    109346
+		20    81520
+		25    65681
+		30    52685
+		35    41576
+		40    33569
+		45    26173
+		50    21394
+		55    17581
+		60    15423
+		65    12967
+		70    10791
+		75    9021
+		80    7574 >;
+	battery-id = <&chosen>;
+	keep_rtc_ui_soc = <1>; /* this value must set 1 */
+#include "../battery_BL-T45.dtsi"
+
+	charger-controller = <&chgctrl>;
+};
+
+&pe {
+	status = "disabled";
+	charger-controller = <&chgctrl>;
+};
+
+&pe2 {
+	status = "disabled";
+	charger-controller = <&chgctrl>;
+};
+
+&pdc {
+	status = "disabled";
+};
+
+&pe4 {
+	status = "disabled";
+};
+
+/* Battery ID */
+&odm {
+	battery_id: battery_id {
+		compatible = "lge,battery-id";
+		battery-id = <&chosen>;
+
+		voltage-max = <4400000>;
+		charge-full-design = <4000000>;
+		model-name = "BLT45";
+
+		LISHEN {
+			id = "LISHEN";
+			manufacturer = "Lishen";
+			type = "LGE_BLT45_LISHEN_4000mAh";
+		};
+		TOCAD {
+			id = "TOCAD";
+			manufacturer = "Tocad";
+			type = "LGE_BLT45_TOCAD_4000mAh";
+		};
+	};
+};
+
+/* Charger Controller */
+&odm {
+	chgctrl: charger_controller {
+		compatible = "lge,charger-controller";
+		power-supply-name = "charger_controller";
+		charger = <&mt6370_chg>;
+		battery = <&mtk_gauge>;
+		battery-id = <&battery_id>;
+		bootmode = <&chosen>;
+
+		icl = <2000>;
+		fcc = <2000>;
+		vfloat = <4400>;
+		fastchg = <0>;
+		batt_therm_comp = <4>;
+
+		bc12-retry-ms = <3000>;
+
+		/* otp */
+		otp-version = "2.1";
+		otp-fcc = <900>;
+		otp-vfloat = <4000>;
+
+		/* fb */
+		fb-fcc = <1500>;
+
+		/* game */
+		game-fcc = <700>;
+
+		game-light-fcc = <700>;
+		game-light-load = <80>;
+		game-light-sec = <100>;
+
+		game-lowbatt-fcc = <700>;
+		game-lowbatt-soc = <15>;
+
+		/* model */
+		model {
+			group =
+			/* model name, setting */
+			"LM-K500UM", "VZW_CHG";
+			VZW_CHG {
+				vzw_chg_mode;
+			};
+		};
+	};
+};
+
+/* Power Sysfs */
+&odm {
+	lge_power_sysfs {
+		compatible = "lge,power-sysfs";
+		sysfs,node =
+			/* adc group */
+			"adc", "batt_id", "/sys/class/power_supply/battery_id/authentic",
+			"adc", "batt_therm", "/sys/class/power_supply/battery/temp",
+			"adc", "thermal", "/sys/class/thermal/",
+			"adc", "usb_id", "/sys/devices/platform/odm/odm:usb_id/voltage",
+			"adc", "vts", "/sys/class/thermal/thermal_zone18/temp",
+			/* battery group */
+			"battery", "battery_type", "/sys/devices/platform/odm/odm:battery_id/type",
+			"battery", "capacity", "/sys/class/power_supply/battery/capacity",
+			"battery", "raw_capacity", "/sys/class/power_supply/battery/rawsoc",
+			"battery", "ttf_capacity", "/sys/class/power_supply/battery/ttfsoc",
+			"battery", "cycle", "/sys/class/power_supply/battery/cycle_count",
+			"battery", "health", "/sys/class/power_supply/battery/health",
+			"battery", "present", "/sys/class/power_supply/battery/present",
+			"battery", "temp", "/sys/class/power_supply/battery/temp",
+			"battery", "valid_batt_id", "/sys/class/power_supply/battery_id/authentic",
+			"battery", "voltage_now", "/sys/class/power_supply/battery/voltage_now",
+			"battery", "status", "/sys/class/power_supply/battery/status",
+			"battery", "status_raw", "/sys/class/power_supply/charger_controller/status",
+			"battery", "time_to_full_now", "/sys/class/power_supply/charger_controller/time_to_full_now",
+			"battery", "bsm_timetofull", "/sys/devices/platform/odm/odm:charger_controller/bcc",
+			"battery", "charge_full", "/sys/class/power_supply/battery/charge_full",
+			"battery", "charge_full_design", "/sys/class/power_supply/battery/charge_full_design",
+			"battery", "charge_counter", "/sys/class/power_supply/battery/charge_counter",
+			"battery", "battery_age", "/sys/class/power_supply/battery/age",
+			"battery", "battery_age_level", "/sys/class/power_supply/battery/age_level",
+			"battery", "condition", "/sys/class/power_supply/battery/age_condition",
+			/* charger group */
+			"charger", "present", "/sys/class/power_supply/mt6370_pmu_charger/online",
+			"charger", "usb_online", "/sys/class/power_supply/mt6370_pmu_charger/online",
+			"charger", "type", "/sys/class/power_supply/mt6370_pmu_charger/type",
+			"charger", "ibat_current", "/sys/class/power_supply/battery/current_now",
+			"charger", "ichg_current", "/sys/class/power_supply/mtk-master-charger/input_current_limit",
+			"charger", "chgstep", "/sys/devices/platform/odm/odm:charger_controller/chgstep",
+			"charger", "battery_charging_enabled", "/sys/devices/platform/odm/odm:charger_controller/cmd_battery_charging_enabled",
+			"charger", "charging_enabled", "/sys/devices/platform/odm/odm:charger_controller/cmd_charging_enabled",
+			"charger", "input_suspend", "/sys/devices/platform/odm/odm:charger_controller/cmd_input_suspend",
+			"charger", "fastchg", "/sys/devices/platform/odm/odm:charger_controller/fastchg",
+			"charger", "fastchg_support", "/sys/devices/platform/odm/odm:charger_controller/fastchg_support",
+			"charger", "incompatible", "/sys/devices/platform/odm/odm:charger_controller/floatchg",
+			"charger", "restricted_charging", "/sys/devices/platform/odm/odm:charger_controller/restricted",
+			"charger", "time_out", "/sys/devices/platform/charger/safety_timer",
+			"charger", "usbid_type", "/sys/devices/platform/odm/odm:usb_id/type",
+			/* ccd group */
+			"ccd", "icl", "/sys/devices/platform/odm/odm:charger_controller/ccd_icl",
+			"ccd", "fcc", "/sys/devices/platform/odm/odm:charger_controller/ccd_fcc",
+			"ccd", "vfloat", "/sys/devices/platform/odm/odm:charger_controller/ccd_vfloat",
+			"ccd", "chgtype", "/sys/devices/platform/odm/odm:charger_controller/ccd_chgtype",
+			"ccd", "ichg", "/sys/class/power_supply/mtk-master-charger/constant_charge_current_max",
+			"ccd", "ttf", "/sys/devices/platform/odm/odm:charger_controller/ccd_ttf",
+			/* lcd group */
+			"lcd", "brightness", "/sys/class/leds/lcd-backlight/brightness",
+			"lcd", "max_brightness", "/sys/class/leds/lcd-backlight/max_brightness",
+			/* key led group */
+			/* cpu group */
+			"cpu", "game_mode", "/proc/ppm/policy/auto_game_limit",
+			/* gpu group */
+			/* platform group */
+			/* perf service feature group */
+			/* testmode group */
+			"testmode", "batt_id", "/sys/devices/platform/odm/odm:battery_id/id",
+			"testmode", "battexist", "/sys/class/power_supply/battery/present",
+			"testmode", "charge", "/sys/devices/platform/odm/odm:charger_controller/atcmd_charge",
+			"testmode", "chcomp", "/sys/devices/platform/odm/odm:charger_controller/atcmd_chcomp",
+			"testmode", "chgmodeoff", "/sys/devices/platform/odm/odm:charger_controller/atcmd_chgmodeoff",
+			"testmode", "fuelval", "/sys/class/power_supply/battery/capacity",
+			"testmode", "temp", "/sys/devices/platform/odm/odm:charger_controller/atcmd_batmp",
+			"testmode", "usb_id", "/sys/devices/platform/odm/odm:usb_id/atcmd_usb_id",
+			"testmode", "valid_batt_id", "/sys/devices/platform/odm/odm:battery_id/id_valid",
+			"testmode", "voltage_now", "/sys/class/power_supply/battery/voltage_now";
+		/* model */
+		model {
+			model = "LM-K500UM";
+			sysfs,node =
+				"battery", "vzw_chg", "/sys/devices/platform/odm/odm:charger_controller/vzwchg";
+		};
+	};
+};
+
+&odm {
+	tboard_thermistor3: thermal-sensor3 {
+		compatible = "mediatek,mtboard-thermistor3";
+		io-channels = <&auxadc 2>;
+		io-channel-names = "thermistor-ch2";
+		interconnects = <&auxadc 2>;
+	};
+};

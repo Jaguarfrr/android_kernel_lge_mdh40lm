@@ -1,0 +1,7 @@
+menuconfig STYLUS
+	tristate "Stylus class support"
+	help
+	  Say Y here to enable stylus class support. This allows
+	  monitoring switches by userspace via sysfs and uevent.
+
+	  If unsure, say Y.

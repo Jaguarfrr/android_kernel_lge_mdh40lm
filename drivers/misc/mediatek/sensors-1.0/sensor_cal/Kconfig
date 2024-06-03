@@ -1,0 +1,4 @@
+config LGE_SENSOR_CUSTOM_CALI
+        bool "LGE_SENSOR_CUSTOM_CALI"
+        help
+          Kernel driver which implements file I/O to read&write sensor cal value

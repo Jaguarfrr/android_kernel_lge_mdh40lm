@@ -1,0 +1,5 @@
+config NT36526_TXD_HDPLUS_DSI_VDO
+	bool "Enable TXD NT36526 INCELL Video Mode HD+ panel for EH15"
+	default n
+	help
+		TXD NT36526 INCELL Video Mode HD+ panel for EH15

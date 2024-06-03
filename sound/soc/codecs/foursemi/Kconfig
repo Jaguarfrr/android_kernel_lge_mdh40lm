@@ -1,0 +1,5 @@
+config SND_SOC_FS16XX
+	tristate "Support fs16xx and fs18xx"
+	depends on I2C
+	help
+	  FourSemi Smart Amplifier Driver

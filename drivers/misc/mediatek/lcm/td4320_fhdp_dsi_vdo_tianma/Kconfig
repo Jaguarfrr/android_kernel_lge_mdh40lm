@@ -1,0 +1,5 @@
+config TD4320_FHDP_DSI_VDO_TIANMA
+	bool "Enable TIANMA TD4320 FHD+ panel for DH40"
+	default n
+	help
+		TIANMA TD4320 FHD+ panel for DH40

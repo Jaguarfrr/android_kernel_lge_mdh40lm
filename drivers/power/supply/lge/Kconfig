@@ -1,0 +1,79 @@
+if LGE_PM
+
+config LGE_PM_BATTERY_CYCLE
+	bool "Battery cycle count support"
+	default n
+	help
+	  Say Y here to enabled support battery cycle count.
+
+config LGE_PM_BATTERY_AGING_FACTOR
+	bool "Battery aging factor support"
+	default n
+	depends on LGE_PM_BATTERY_CYCLE
+	help
+	  Say Y here to enable support battery aging factor.
+
+config LGE_PM_BATTERY_ID
+	bool "Battery ID support"
+	default n
+	help
+	  Say Y here to enable support check battery id.
+
+config LGE_PM_BATTERY_PRESENT
+	bool "LG Electronic Battery present related patch"
+	default n
+	help
+	  Say Y here to apply battery present handling patch.
+
+config LGE_PM_BATTERY_NTC
+	bool "Battery temperature customization support"
+	default n
+	help
+	  set customized battery temperature file here.
+
+config LGE_PM_BATTERY_NTC_HEADER
+	string "Battery temperature customization file"
+	default "lge/ntc100k.h"
+	depends on LGE_PM_BATTERY_NTC
+	help
+	  set customized battery temperature file here.
+
+config LGE_PM_CHARGER_CONTROLLER
+	bool "LG Electronics charging scenario manager"
+	default n
+	help
+	  Say Y here to enable support LG charging scenario.
+
+config LGE_PM_POWER_SYSFS
+	bool "LG Electronic unified power sysfs"
+	default n
+	help
+	  Say Y here to enable support unified power sysfs.
+
+config LGE_PM_PSEUDO_BATTERY
+	bool "LG Electronic pseudo battery"
+	select LGE_PM_PSEUDO_POWER_SUPPLY
+	default n
+	help
+	  Say Y here to enable support fake battery.
+
+config LGE_PM_PSEUDO_HVDCP
+	bool "LG Electronic pseudo hvdcp"
+	select LGE_PM_PSEUDO_POWER_SUPPLY
+	default n
+	help
+	  Say Y here to enable support fake hvdcp.
+
+config LGE_PM_PSEUDO_POWER_SUPPLY
+	bool "LG Electronic pseudo battery"
+	default n
+	help
+	  Say Y here to enable support fake power supply.
+
+config LGE_PM_QNOVO_QNS
+	bool "QNOVO QNS System support"
+	default n
+	help
+	  Say Y to enable support QNOVO QNS system
+
+endif # LGE_PM

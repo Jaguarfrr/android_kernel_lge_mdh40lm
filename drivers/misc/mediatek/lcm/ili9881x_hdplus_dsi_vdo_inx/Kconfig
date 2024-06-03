@@ -1,0 +1,4 @@
+config ILI9881X_HDPLUS_DSI_VDO_INX
+
+    bool "Enable INNOLUX ILI9881X HDPLUS VIDEO panel for DH15"
+    default n

@@ -1,0 +1,3 @@
+config ILI9882N_SKYWORTH_HDP1600_DSI_VDO_SM5109_3LANE
+    bool "Enable ILI9882N INCELL HDPLUS panel"
+    default n

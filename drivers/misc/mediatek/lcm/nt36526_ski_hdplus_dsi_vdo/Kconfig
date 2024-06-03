@@ -1,0 +1,5 @@
+config NT36526_SKI_HDPLUS_DSI_VDO
+	bool "Enable SKI NT36526 INCELL Video Mode HD+ panel for EH15"
+	default n
+	help
+		SKI NT36526 INCELL Video Mode HD+ panel for EH15

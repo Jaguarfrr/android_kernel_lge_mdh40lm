@@ -1,0 +1,12 @@
+/*
+ * LG Electronics MT6765 HDK usb device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+&mt6370_typec {
+	mt6370pd,intr_gpio = <&pio 41 0x0>;
+	mt6370pd,intr_gpio_num = <41>;
+};

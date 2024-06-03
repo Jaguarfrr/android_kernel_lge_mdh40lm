@@ -1,0 +1,3 @@
+config SND_SOC_FS1894
+	bool "foursemi smartpa fs1894 driver"
+	default n

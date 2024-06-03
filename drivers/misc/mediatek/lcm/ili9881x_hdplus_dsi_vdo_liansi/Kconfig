@@ -1,0 +1,4 @@
+config ILI9881X_HDPLUS_DSI_VDO_LIANSI
+
+    bool "Enable LIANSI ILI9881X HDPLUS VIDEO panel for DH15"
+    default n

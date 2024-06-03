@@ -1,0 +1,13 @@
+/*
+ * LG Electronics MT6765 HDK usb device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+&otg_iddig {
+    interrupt-parent = <&pio>;
+    interrupts = <147 IRQ_TYPE_LEVEL_LOW 41 1>;
+    status = "okay";
+};

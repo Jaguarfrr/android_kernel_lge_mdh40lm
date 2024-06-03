@@ -1,0 +1,15 @@
+config SND_SOC_TAS2563
+        tristate "Texas Instruments TAS2563 SmartAmp(R)"
+
+config TAS2563_REGMAP
+    bool "Use of RegMap API"
+
+config TAS2563_CODEC
+    bool "Codec Driver support"
+
+config TAS2563_MISC
+    bool "Misc Driver support"
+
+config SND_SOC_TAS2563_LGE
+	tristate "Customization for cirrus cs35l41"
+

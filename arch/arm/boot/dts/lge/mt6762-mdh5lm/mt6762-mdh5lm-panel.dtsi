@@ -1,0 +1,290 @@
+/*
+ * LG Electronics MT6765 HDK panel device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+&odm {
+	led0:led@0 {
+		status = "disabled";
+	};
+	led1:led@1 {
+		status = "disabled";
+	};
+	led2:led@2 {
+		status = "disabled";
+	};
+	led3:led@3 {
+		status = "disabled";
+	};
+	led4:led@4 {
+		status = "disabled";
+	};
+	led5:led@5 {
+		status = "disabled";
+	};
+	led6:led@6 {
+		compatible = "mediatek,lcd-backlight";
+		led_mode = <5>;
+		data = <1>;
+		pwm_config = <0 14 0 0 0>;
+		lge.blmap-size = <256>;
+		lge.blmap = <
+			12 12 12 12 12 12 12 12 12 12 12 12 12 13 13 14
+			14 15 15 16 16 17 17 17 18 18 19 19 20 20 21 21
+			22 22 23 23 23 24 24 25 25 26 26 27 27 28 28 29
+			29 29 30 30 31 31 32 32 33 33 34 34 35 36 38 40
+			42 43 45 47 49 50 52 54 56 58 59 61 63 65 66 68
+			70 72 73 75 77 79 81 82 84 86 88 89 91 93 95 96
+			98 100 102 104 105 107 109 111 112 114 116 118 120 123 126 129
+			133 136 139 142 146 149 152 155 159 162 165 168 172 175 178 182
+			185 188 191 195 198 201 204 208 211 214 217 221 224 227 231 234
+			237 240 244 247 250 253 257 260 263 266 270 273 276 280 284 289
+			294 299 304 309 313 318 323 328 333 338 342 347 352 357 362 367
+			371 376 381 386 391 396 400 405 410 415 420 425 429 434 439 444
+			449 454 458 463 468 473 478 483 487 492 497 502 507 512 517 524
+			531 538 546 553 560 568 575 582 590 597 604 611 619 626 633 641
+			648 655 663 670 677 685 692 699 706 714 721 728 736 743 750 758
+			765 772 780 787 794 801 809 816 823 831 838 845 853 860 867 875
+		>;
+		lge.pwm_default_brightness = <678>;
+	};
+	vibrator0:vibrator@0 {
+		compatible = "mediatek,vibrator";
+		vib_timer = <25>;
+		vib_limit = <9>;
+		vib_vol= <9>;
+	};
+};
+
+&i2c6 {
+	i2c_lcd_bias@3e {
+		compatible = "mediatek,i2c_lcd_bias";
+		reg = <0x3e>;
+		status = "okay";
+	};
+};
+
+&odm {
+	lcd_bias {
+		compatible = "mediatek,gpio_lcd_bias";
+		status = "okay";
+		/* touch-reset-gpio = <&pio 164 0x00>; */
+		pinctrl-names = "default",
+				"lcd_bias_gpio_lcm_rst0", "lcd_bias_gpio_lcm_rst1",
+				"lcd_bias_gpio_vpos_en0", "lcd_bias_gpio_vpos_en1",
+				"lcd_bias_gpio_vneg_en0", "lcd_bias_gpio_vneg_en1",
+				"lcd_bias_lcd_ldo_en0", "lcd_bias_lcd_ldo_en1";
+		pinctrl-0 = <&lcd_bias_pins_default>;
+		pinctrl-1 = <&lcd_bias_pins_lcm_rst0>;
+		pinctrl-2 = <&lcd_bias_pins_lcm_rst1>;
+		pinctrl-3 = <&lcd_bias_pins_vpos_en0>;
+		pinctrl-4 = <&lcd_bias_pins_vpos_en1>;
+		pinctrl-5 = <&lcd_bias_pins_vneg_en0>;
+		pinctrl-6 = <&lcd_bias_pins_vneg_en1>;
+		pinctrl-7 = <&lcd_bias_pins_lcd_ldo_en0>;
+		pinctrl-8 = <&lcd_bias_pins_lcd_ldo_en1>;
+	};
+};
+
+&pio {
+	lcd_bias_pins_default: lcd_bias_gpio_default {
+	};
+	lcd_bias_pins_lcm_rst0: lcd_bias_gpio_lcm_rst0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+	lcd_bias_pins_lcm_rst1: lcd_bias_gpio_lcm_rst1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	lcd_bias_pins_vpos_en0: lcd_bias_gpio_vpos_en0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO16__FUNC_GPIO16>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+	lcd_bias_pins_vpos_en1: lcd_bias_gpio_vpos_en1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO16__FUNC_GPIO16>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	lcd_bias_pins_vneg_en0: lcd_bias_gpio_vneg_en0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO14__FUNC_GPIO14>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+	lcd_bias_pins_vneg_en1: lcd_bias_gpio_vneg_en1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO14__FUNC_GPIO14>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	lcd_bias_pins_lcd_ldo_en0: lcd_bias_lcd_ldo_en0 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO15__FUNC_GPIO15>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+	lcd_bias_pins_lcd_ldo_en1: lcd_bias_lcd_ldo_en1 {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO15__FUNC_GPIO15>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+};
+
+&mt6370_pmu {
+	bled {
+		/* mt,ext_en_pin; */
+		mt,chan_en  = <0xf>; /* bit 0 1 2 3 -> chan 1 2 3 4 */
+		mt,map_linear;
+		mt,bl_ovp_level = <3>;	/* 0: 17v */
+					/* 1: 21v */
+					/* 2: 25v */
+					/* 3: 29v */
+		mt,bl_ocp_level = <2>;	/* 0: 900mA */
+					/* 1: 1200mA */
+					/* 2: 1500mA */
+					/* 3: 1800mA */
+		mt,use_pwm;
+		mt,pwm_fsample = <2>;	/* 0: 1MHz */
+					/* 1: 4MHz */
+					/* 2: or 3: 24mHz */
+		mt,pwm_deglitch = <1>;	/* 0: no filter */
+					/* 1: 100ns */
+					/* 2: 160ns */
+					/* 3: 200ns */
+		mt,pwm_avg_cycle = <0>; /* 0: disable avg */
+					/* 1: avg 2 cycle */
+					/* 2: avg 4 cycle */
+					/* 3: avg 8 cycle */
+					/* 4: avg 16 cycle */
+					/* 5: avg 32 cycle */
+		mt,bled_ramptime = <3>; /* 0, 500us, 750us, 1ms, 2ms */
+					/* 5ms, 10ms, 20ms, 50ms */
+					/* 100ms, 250ms, 800ms */
+					/* 1s, 2s, 4s, 8s */
+		mt,bled_flash_ramp = <1>;	/* 0, 500us, 750us */
+						/* 1ms, 2ms, 5ms */
+
+		/* we have 11 bit resolution, quantize in driver */
+		mt,max_bled_brightness = <678>; /* maximum 2047 */
+	};
+	dsv {
+		db_ext_en = <0>;  /* 0 = i2c ctrl; 1 = ext pin */
+
+		/* 1 = prevent from voltage drop when db is restart */
+		db_periodic_fix = <0>;
+
+		/* 0 : VOS & VNEG are ctrled by DB_ENP & DB_ENN*/
+		/* 1 : single pin ctrl*/
+		db_single_pin = <0>;
+
+		/* 0 = 20Hz */
+		/* 1 = 33Hz; valid if db_period_mode = 1 */
+		db_freq_pm = <0>;
+
+		/* 0 = always on if DB is enabled */
+		/* 1 = DB period mode */
+		db_periodic_mode = <0>;
+
+		/* 0 = close loop, wait 80% */
+		/* 1 = open loop, go after soft-start dimming */
+		db_startup = <0>;
+
+		/* 1 = DB VNEG discharge 20ms when shutdown */
+		/* 0 = disable */
+		db_vneg_20ms = <0>;
+
+		/* 1 = Discharge VNEG when turn off */
+		/* 0 = disable */
+		db_vneg_disc = <1>;
+
+		/* 1 = DB VPOS discharge 20ms when shutdown */
+		/* 0 = disable */
+		db_vpos_20ms = <0>;
+
+		/* 1 = Discharge VPOS when turn off */
+		/* 0 = disable */
+		db_vpos_disc = <1>;
+
+		db_delay = <1>;	/* 0 = no constraint */
+				/* 1 = 0 ms */
+				/* 2 = 1 ms */
+				/* 3 = 4 ms */
+		db_vbst  = <6000>;      /* mV */
+		db_vpos_slew = <1>;	/* 0: 8.46 V/ms */
+					/* 1: 5.79 V/ms */
+					/* 2: 3.87 V/ms */
+					/* 3: 2.97 V/ms */
+		db_vneg_slew = <1>;	/* 0: -9.24V/ms */
+					/* 1: -5.97V/ms */
+					/* 2: -4.82V/ms */
+					/* 3: -3.07V/ms */
+		mt6370_dsvp {
+			/* change name by yourself */
+			regulator-name = "dsv_pos";
+
+			regulator-min-microvolt = <4000000>;
+
+			/* max == min then apply_uV = 1 */
+			regulator-max-microvolt = <6000000>;
+
+			/* optional*/
+			/* regulator-microvolt-offset = <0>; */
+
+			/* optional, exist = enabled */
+			/* regulator-boot-on = "yes"; */
+
+			/* optional, exist = enabled */
+			/* regulator-always-on = "yes"; */
+
+			/* optional */
+			/* regulator-ramp-delay = <100>; */
+		};
+		mt6370_dsvn {
+			/* change name by yourself */
+			regulator-name = "dsv_neg";
+
+			regulator-min-microvolt = <4000000>;
+
+			/* max == min then apply_uV = 1 */
+			regulator-max-microvolt = <6000000>;
+
+			/* optional*/
+			/* regulator-microvolt-offset = <0> */
+
+			/* optional, exist = enabled */
+			/* regulator-boot-on = "yes"; */
+
+			/* optional, exist = enabled */
+			/* regulator-always-on = "yes"; */
+
+			/* regulator-ramp-delay = <100>; */
+		};
+	};
+};

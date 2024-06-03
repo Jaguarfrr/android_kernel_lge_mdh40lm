@@ -1,0 +1,3 @@
+config ILI9881C_HDPLUS_DSI_VDO_TXD
+    bool "Enable TXD ILI9881C INCELL HDPLUS panel for MH5""
+    default n

@@ -1,0 +1,5 @@
+config HX83112_FHDP_DSI_VDO_TXD
+	bool "Enable HIMAX HX83112 FHD+ panel for DH40"
+	default n
+	help
+		TIANMA HX83112 FHD+ panel for DH40

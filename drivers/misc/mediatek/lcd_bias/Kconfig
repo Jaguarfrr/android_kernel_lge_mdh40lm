@@ -1,0 +1,12 @@
+
+config LGE_SET_LCD_BIAS
+	bool CONFIG_LGE_SET_LCD_BIAS
+	default n
+	help
+	  LGE LCD BIAS driver
+
+config LGE_DSV_DUALIZE
+	bool CONFIG_LGE_DSV_DUALIZE
+	default n
+	help
+	  support dualization of dsv.

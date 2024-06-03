@@ -1,0 +1,206 @@
+/*
+ * LG Electronics MH4 device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+&spi3 {
+	/* [Modified] Ref. kernel-4.9/arch/arm/boot/dts/mt6765.dts */
+	status = "ok";
+
+	tdmb: tdmb@0 {
+		compatible = "lge,tdmb"; // [Fixed] Should be "lge,tdmb".
+		reg = <0>;
+
+	/* [GPIO Information]
+	*  1) interrupts      (DMB_INT)                       : GPIO #28
+	*  2) en-gpio         (DMB_EN)                        : GPIO #151
+	*  3) ant-sw-gpio  (DMB_ANT_SW)                : GPIO #25
+	*  4) lna-gc-gpio   (DMB_GAIN_CTRL)           : GPIO #150
+	*  5) lna-en-gpio   (DMB_LNA_EN)                 : GPIO #151 (Same DMB_EN)
+	*  6) ldo-en-gpio   (DMB_LDO_EN)                : GPIO #168
+	*/
+
+		/* [Fixed] parents's node name ("pio" on mt6762) */
+		interrupt-parent = <&pio>;
+
+		/* [Modified] Set DMB_INT GPIO, first # is gpio #, other flags keep it  */
+		interrupts = <28 IRQ_TYPE_EDGE_RISING 1 0>;
+
+		/* [Fixed] Specifies maximum SPI clock frequency of DMB chipset(38.4 MHz). (ref. FC8080 datasheet) */
+		spi-max-frequency = <40000000>;
+
+		/* [Fixed] The list of names to assign states, List entry 0,1,2... define the name for integer state ID 0,1,2...
+			- tdmb_pin_active : set to pinctrl-0 list (set to active)
+			- tdmb_pin_sleep : set to pinctrl-1 list (set to sleep) 	*/
+		pinctrl-names = "tdmb_pin_active", "tdmb_pin_sleep";
+
+		/* [Modified] The pin cofig lists can be for control pin.
+			- pinctrl-0 : active state
+			- pinctrl-1 : active sleep(suspend)
+			The pin config lists shall be defined in the "(model)-pinctrl.dtsi" file
+			The control pins lists are interrupt(tdmb_int), enable(tdmb_en), 
+				FM/DMB antenna swtiching(tdmb_ant), LNA gain control & enable(tdmb_lna), LDO enable(tdmb_lna_en)
+			Additional items may vary depending on model schematic. */
+		pinctrl-0 = <&tdmb_spi_cs_active>, <&tdmb_int_active>, <&tdmb_en_active>, <&tdmb_lna_active>, <&tdmb_ldo_en_active>;
+		pinctrl-1 = <&tdmb_spi_cs_suspend>, <&tdmb_int_suspend>, <&tdmb_en_suspend>, <&tdmb_lna_suspend>, <&tdmb_ldo_en_suspend>;
+
+		/* [Modified] first is parents's node, second # is gpio #, third flag keep it 0. */
+		en-gpio = <&pio 151 0>;
+		//lna-en-gpio = <&pio 151 0>;
+		lna-gc-gpio = <&pio 150 0>;
+		ldo-en-gpio = <&pio 168 0>;
+
+		/* [Modified] when use DMB_EN & LDO_EN same gpio, change below property to 1 */
+		dmb-en-lna-en-same-gpio = <0>;
+
+
+	/* [ANT Switch Information]
+	*  1) FM/DMB Switch                               : Control
+	*  2) TDMB ANT connected to port1 (High) and FM_ANT connected to port2 (Low), so active mode is high
+	*/
+
+	/* [Modified] when use ant switching, change use-ant-sw to 1, and set ant active mode (high(1) or low(0)), ant-gpio.
+		ant-sw-apio should be dmb_ant's Gpio number */
+		use-ant-sw = <1>;
+		ant-sw-gpio = <&pio 25 0>;
+		ant-sw-active-value = <0>;
+
+
+	/* [CLK Information] */
+	/* [Modified] when use pmic clk buffer, change use-xtal to 0 and set xtal-freq(DMB Chipset Core clk), interface-freq(SPI interface clk) inter value in kHz. */
+		use-xtal = <1>;
+		xtal-freq = <26000>;
+		interface-freq = <26000>;
+
+	/* [Modified] when using clock buffer, you should check which clock buffer used for dmb device */
+		//clock-names = "tdmb_xo";
+		//clocks = <&clk_parents?? ??>;
+
+
+	/* [Power Supply Description Information]
+	*  1) ANT-SW LDO  ()         : V2.7, Always power, power on/off control not need
+	*  2) DMB LDO    ()            : V1.8, Always power, power on/off control not need
+	*  3) LNA LDO     ()            : V2.7, Always power, power on/off control not need
+	*/
+
+	/* [Modified] When use ldo for RFSW, change ctrl-ant-sw-ldo to 1, and ant-sw-supply set the appropriate chipset & power function such as <&pm8953_l10>
+				If no use case, change ctrl-ant-sw-ldo to 0, and ant-sw-supply set such as <&chipset#_l??>*/
+		ctrl-ant-sw-ldo = <0>;
+		//ant-sw-ldo-supply = <&chipset#_l??>;
+
+	/* [Modified] when use ldo for LDO_IN, change ctrl-dmb-ldo to 1, and dmb-ldo-supply set the appropriate chipset & power function such as <&pm8953_l10>
+				If no use case, change ctrl-dmb-ldo to 0, and dmb-ldo-supply set such as <&chipset#_l??>*/
+		ctrl-dmb-ldo = <0>;
+		//dmb-ldo-supply = <&chipset#_l??>
+
+	/* [Modified] when use ldo for LNA(U1800), change ctrl-lna-ldo to 1, and lna-ldo-supply set the appropriate chipset & power function such as <&pm8953_l10>
+				If no use case, change ctrl-lna-ldo to 0, and lna-ldo-supply set such as <&chipset#_l??>*/
+		ctrl-lna-ldo = <0>;
+		//lna-ldo-supply = <<&chipset#_l??>;
+	};
+};
+
+&pio {
+	tdmb_spi_cs_active: tdmb_spi_cs_active {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO22__FUNC_SPI3_CSB>;
+			slew-rate = <0>; // direction 0:in, 1:out 
+			bias-disable;
+		};
+	};
+
+	tdmb_spi_cs_suspend: tdmb_spi_cs_suspend {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO22__FUNC_GPIO22>;
+			slew-rate = <0>; // direction 0:in, 1:out 
+			output-low;
+			bias-pull-down;
+		};
+	};
+
+	tdmb_int_active: tdmb_int_active {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO28__FUNC_GPIO28>;
+			slew-rate = <0>; // direction 0:in, 1:out 
+			bias-pull-up;
+		};
+	};
+
+	tdmb_int_suspend: tdmb_int_suspend {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO28__FUNC_GPIO28>;
+			bias-pull-down;
+		};
+	};
+
+	tdmb_en_active: tdmb_en_active {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO151__FUNC_GPIO151>;
+			slew-rate = <1>; //direction 0:in, 1:out
+			bias-disable;
+		};
+	};
+
+	tdmb_en_suspend: tdmb_en_suspend {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO151__FUNC_GPIO151>;
+			slew-rate = <1>; // direction 0:in, 1:out 
+			bias-pull-down;
+		};
+	};
+
+	tdmb_lna_active: tdmb_lna_active {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO150__FUNC_GPIO150>;
+			slew-rate = <1>; //direction 0:in, 1:out
+			bias-disable;
+		};
+	};
+
+	tdmb_lna_suspend: tdmb_lna_suspend {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO150__FUNC_GPIO150>;
+			slew-rate = <1>; // direction 0:in, 1:out 
+			bias-pull-down;
+		};
+	};
+
+	tdmb_ldo_en_active: tdmb_ldo_en_active {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO168__FUNC_GPIO168>;
+			slew-rate = <1>; //direction 0:in, 1:out
+			bias-disable;
+		};
+	};
+
+	tdmb_ldo_en_suspend: tdmb_ldo_en_suspend {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO168__FUNC_GPIO168>;
+			slew-rate = <1>; // direction 0:in, 1:out
+			bias-pull-down;
+		};
+	};
+
+/* ref.android/kernel-4.9/arch/arm/boot/dts/lge/mt6762-mdh30xlm/mt6762-mdh30xlm-sound.dtsi
+// FM TDMB Switch
+	tdmb_ant_active: tdmb_ant_active {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO25__FUNC_GPIO25>;
+			slew-rate = <1>; //direction 0:in, 1:out
+			bias-disable;
+		};
+	};
+
+	tdmb_ant_suspend: tdmb_ant_suspend {
+		pins_cmd_dat {
+			pinmux  = <PINMUX_GPIO25__FUNC_GPIO25>;
+			slew-rate = <1>; // direction 0:in, 1:out 
+			bias-pull-down;
+		};
+	};
+*/
+};
+

@@ -1,0 +1,95 @@
+/*
+ * LG Electronics MT6765 HDK fingerprint device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+/* FINGERPRINT start */
+&goodix_fp {
+	status = "disabled";
+};
+
+&odm {
+	fingerprintid: fingerprintid@0 {
+		compatible = "mediatek,fp_id";
+		fp-id-gpios = <&pio 177 0>;
+	};
+
+	fingerprint:fingerprint {
+		compatible = "mediatek,fingerprint";
+		debounce = <8 0>;
+		interrupt-parent = <&pio>;
+		interrupts = <8 IRQ_TYPE_EDGE_RISING 8 0>;
+		pinctrl-names =
+			"fingerprint_default",
+			"fingerprint_irq",
+			"fingerprint_rst_low",
+			"fingerprint_rst_high"
+			;
+
+		pinctrl-0 = <&fingerprint_pctl_default>;
+		pinctrl-1 = <&fingerprint_pctl_irq>;
+		pinctrl-2 = <&fingerprint_pctl_rst_low>;
+		pinctrl-3 = <&fingerprint_pctl_rst_high>;
+	};
+};
+
+&spi0 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	fingerprint@0 {
+		status = "okay";
+		compatible = "fingerprint,mediatek";
+		reg = <0>;
+		spi-bus-num = <0>;
+		spi-max-frequency = <8000000>;
+
+		vdd_ldo_enable = <0>;
+		vio_ldo_enable = <0>;
+		config_spi_pin = <0>;
+
+		fpc,gpio_irq = <&pio 8 0x0>;
+		fpc,gpio_rst = <&pio 170 0x0>;
+		fpc,enable-wakeup;
+	};
+};
+
+&pio {
+	fingerprint_pctl_default:fingerprint_default1 {
+
+	};
+
+	fingerprint_pctl_irq:fingerprint_pin_irq {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO8__FUNC_GPIO8>;
+			slew-rate = <0>;
+			bias-pull-down;
+		};
+	};
+
+	fingerprint_pctl_rst_low:fingerprint_pin_rst_low {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO170__FUNC_GPIO170>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+
+	fingerprint_pctl_rst_high:fingerprint_pin_rst_high {
+		pins_cmd_dat {
+			pinmux = <PINMUX_GPIO170__FUNC_GPIO170>;
+			slew-rate = <1>;
+			bias-disable;
+			output-high;
+		};
+	};
+};
+
+&mt_pmic_vcn33_bt_ldo_reg {
+	regulator-max-microvolt = <3300000>;
+	regulator-always-on;
+};
+/* FINGERPRINT end */

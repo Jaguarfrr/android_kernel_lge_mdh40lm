@@ -1,0 +1,183 @@
+/*
+ * Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&i2c0 {
+	clock-frequency = <400000>;
+	mediatek,use-open-drain;
+	cap_touch@5d {
+		status = "disabled";
+	};
+	novatek,nt36526@62 {
+		compatible = "novatek,nt36526";
+		status = "ok";
+
+		reg = <0x62>;
+		interrupt-parent = <&pio>;
+		interrupts = <1 0x2002 1 0>;
+		irqflags = <0x2002>;
+ 
+		reset-gpio = <&pio 164 0x00>;
+		irq-gpio = <&pio 1 0x2002>;
+		//vcl-gpio = <&pio 27 0x00>;	/* 2.8v - VDD */
+		//vdd-gpio = <&pio 42 0x00>;    /* 1.8v - IOVCC */
+
+		/* IRQF_ONESHOT		0x00002000 */
+		/* IRQF_TRIGGER_FALLING		0x00000002 */
+		/* IRQF_NO_SUSPEND		0x00004000 */
+
+		pinctrl-names = "default", "touch_pin_active", "touch_pin_sleep";	/* Touch GPIO pin name setting */
+		pinctrl-0 = <&ts_pin_default>;
+		pinctrl-1 = <&ts_pin_active>;		/* Touch GPIO pin active setting */
+		pinctrl-2 = <&ts_pin_suspend>;		/* Touch GPIO pin suspend setting */
+
+		/*Caps*/
+		max_x = <719>;
+		max_y = <1599>;
+		max_pressure = <0xff>;
+		max_width_major = <15>;
+		max_width_minor = <15>;
+		max_orientation = <1>;
+		max_id = <10>;
+		sw_reset_delay = <200>;
+		hw_reset_delay = <200>;
+
+		/* Role */
+		use_lpwg = <1>;
+		use_lpwg_test = <1>;
+		hide_coordinate = <1>;
+
+		/* firmware & panel_spec path */
+		use_fw_upgrade = <1>;
+
+		fw_image = "touch/mdh15lm/novatek/novatek_ts_fw.bin";
+
+		panel_spec = "touch/mdh15lm/novatek/dh15_limit.txt";
+		panel_spec_mfts_folder = "touch/mdh15lm/novatek/dh15_limit_mfts.txt";
+
+		/* Performance Test */
+		use_perf_test = <1>;
+		test_delay = <16>;
+		test_pressure = <50>;
+		test_width = <100>;
+		test_jig_size = <8>;
+		click_test_x = <90>;
+		click_test_y = <410>;
+		v_drag_test_x = <72>;
+		v_drag_test_start_y = <971>;
+		v_drag_test_end_y = <548>;
+		h_drag_test_start_x = <571>;
+		h_drag_test_end_x = <148>;
+		h_drag_test_y = <1064>;
+
+	};
+	ili9881x@41 {
+		compatible = "lge,ili9881x";
+		status = "ok";
+
+		reg = <0x41>;
+
+		/* GPIOs */
+		interrupt-parent = <&pio>;
+		interrupts = <1 0x2002 1 0>;
+
+		/* IRQF_ONESHOT		0x00002000 */
+		/* IRQF_TRIGGER_FALLING		0x00000002 */
+		/* IRQF_NO_SUSPEND		0x00004000 */
+
+		pinctrl-names = "default", "touch_pin_active", "touch_pin_sleep";	/* Touch GPIO pin name setting */
+		pinctrl-0 = <&ts_pin_default>;
+		pinctrl-1 = <&ts_pin_active>;		/* Touch GPIO pin active setting */
+		pinctrl-2 = <&ts_pin_suspend>;		/* Touch GPIO pin suspend setting */
+
+		reset-gpio = <&pio 164 0x00>;
+		irq-gpio = <&pio 1 0x2002>;
+		irqflags = <0x2002>;
+
+		/* Caps */
+		max_x = <719>;
+		max_y = <1599>;
+		max_pressure = <0xff>;
+		max_width_major = <15>;
+		max_width_minor = <15>;
+		max_orientation = <1>;
+		max_id = <10>;
+		hw_reset_delay = <100>;
+		sw_reset_delay = <300>;
+
+		/* Role */
+		use_lpwg = <1>;
+		use_lpwg_test = <1>;
+		hide_coordinate = <1>;
+
+		/* firmware & panel_spec path */
+		use_fw_upgrade = <1>;
+		use_firmware = <0>;
+
+		fw_image = "touch/mdh15lm/ilitek/LGE_INX_ILI9881X_V0_16_AP_2_00_MP_20200212.bin";
+		panel_spec = "touch/mdh15lm/ilitek/dh15_limit.txt";
+		panel_spec_mfts_folder = "touch/mdh15lm/ilitek/dh15_limit_mfts.txt";
+
+		/* Performance Test */
+		use_perf_test = <1>;
+		test_delay = <8>;
+		test_pressure = <50>;
+		test_width = <100>;
+		test_jig_size = <8>;
+		click_test_x = <90>;
+		click_test_y = <381>;
+		v_drag_test_x = <72>;
+		v_drag_test_start_y = <1011>;
+		v_drag_test_end_y = <588>;
+		h_drag_test_start_x = <571>;
+		h_drag_test_end_x = <148>;
+		h_drag_test_y = <1120>;
+	};
+};
+
+
+&touch {
+	status = "disabled";
+};
+
+/* touch gpio start */
+&pio {
+	ts_pin_default: ts_default {
+	};
+
+	ts_pin_active: ts_active {
+		pins_cmd0_dat {
+			pinmux = <PINMUX_GPIO1__FUNC_GPIO1>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+		pins_cmd1_dat {
+			pinmux = <PINMUX_GPIO164__FUNC_GPIO164>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	ts_pin_suspend: ts_suspend {
+		pins_cmd0_dat {
+			pinmux = <PINMUX_GPIO1__FUNC_GPIO1>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+		pins_cmd1_dat {
+			pinmux = <PINMUX_GPIO164__FUNC_GPIO164>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+};
+/* touch gpio end */

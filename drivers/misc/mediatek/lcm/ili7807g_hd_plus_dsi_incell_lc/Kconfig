@@ -1,0 +1,3 @@
+config ILI7807G_HD_PLUS_DSI_INCELL_LC
+    bool "Enable LC ILI7807G INCELL HD PLUS panel for DH35"
+    default n

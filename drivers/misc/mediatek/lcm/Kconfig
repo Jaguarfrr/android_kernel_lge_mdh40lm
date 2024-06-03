@@ -1,0 +1,38 @@
+config MTK_LCM
+	bool "Enable LCM driver"
+	default n
+	help
+	  define LCM driver config to enable LCM driver.
+	  To set LCM driver which you choose avoid cannot driver LCM.
+	  Please make sure CONFIG_MTK_LCM in xxxxxx_defconfig.mk.
+	  And also make sure true on in ProjectConfig.mk
+
+config CUSTOM_KERNEL_LCM
+	string "define mediatek kernel LCM driver"
+	help
+	  To choose kernel LCM driver name.
+	  This config is to select which LCM driver you want to use.
+	  Please make sure CUSTOME_KERNEL_LCM in xxxxx_defconfig.mk.
+	  And also make sure turn on in ProjectConfig.mk
+
+config MTK_LCM_DEVICE_TREE_SUPPORT
+	bool "support LCM device tree connect with display drivers"
+	help
+	  Decide whether to support LCM device tree based configuration.
+	  This feature requires the connection between display driver and LCM devices.
+	  Please also turn on MTK_LCM_DEVICE_TREE_SUPPORT in ProjectConfig.mk.
+	  If not define MTK_LCM_DEVICE_TREE_SUPPORT
+	  there will not connect between display driver and LCM devices.
+
+source "drivers/misc/mediatek/lcm/ili9881c_hdplus_dsi_vdo_txd/Kconfig"
+source "drivers/misc/mediatek/lcm/ili9881d_hdplus_dsi_vdo_ctc/Kconfig"
+source "drivers/misc/mediatek/lcm/td4320_fhdp_dsi_vdo_tianma/Kconfig"
+source "drivers/misc/mediatek/lcm/hx83112_fhdp_dsi_vdo_txd/Kconfig"
+source "drivers/misc/mediatek/lcm/sw49110_tianma_fhdplus_dsi_cmd_dh50/Kconfig"
+source "drivers/misc/mediatek/lcm/sw49110_tovis_fhdplus_dsi_cmd_dh50/Kconfig
+source "drivers/misc/mediatek/lcm/ili9881x_hdplus_dsi_vdo_inx/Kconfig"
+source "drivers/misc/mediatek/lcm/nt36526_hdplus_dsi_vdo_tianma/Kconfig"
+source "drivers/misc/mediatek/lcm/ft8006p_hdplus_dsi_vdo_auo/Kconfig"
+source "drivers/misc/mediatek/lcm/ili9881h_hdplus_dsi_vdo_lce/Kconfig"
+source "drivers/misc/mediatek/lcm/ft8615_hdplus_dsi_vdo_auo/Kconfig"
+source "drivers/misc/mediatek/lcm/ili7807g_hd_plus_dsi_incell_lc/Kconfig"

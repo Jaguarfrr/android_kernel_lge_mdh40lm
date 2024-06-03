@@ -1,0 +1,14 @@
+/*
+ * LG Electronics MT6765 HDK camera device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+&i2c6 {
+	#include "../almf04.dtsi"
+};
+&sar_controller {
+	Adsemicon,chip_enable = <&pio 27 0>;
+	Adsemicon,fw_name = "almf04/ALMF04_Sar3CH_NIT_V3.11T.fw";
+};

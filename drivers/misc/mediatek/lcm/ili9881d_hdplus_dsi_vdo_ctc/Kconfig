@@ -1,0 +1,3 @@
+config ILI9881D_HDPLUS_DSI_VDO_CTC
+    bool "Enable CTC ILI9881D INCELL HDPLUS panel for DH5""
+    default n

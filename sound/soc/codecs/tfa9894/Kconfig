@@ -1,0 +1,3 @@
+config SND_SOC_TFA9894 
+	bool "nxp smartpa TFA9894 driver"
+	default n

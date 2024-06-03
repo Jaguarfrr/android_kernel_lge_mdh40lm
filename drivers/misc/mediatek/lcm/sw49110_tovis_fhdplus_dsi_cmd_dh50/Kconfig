@@ -1,0 +1,5 @@
+config SW49110_TOVIS_FHDPLUS_DSI_CMD_DH50
+	bool "Enable TOVIS SW49110 INCELL Command Mode FHD+ panel for DH50"
+	default n
+	help
+		LGD SW49110 INCELL Command Mode FHD+ panel for DH50

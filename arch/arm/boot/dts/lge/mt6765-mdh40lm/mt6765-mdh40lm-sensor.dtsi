@@ -1,0 +1,16 @@
+/*
+ * LG Electronics MT6765 HDK sensor device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+&i2c6 {
+        #include "../almf04.dtsi"
+};
+
+&sar_controller {
+        Adsemicon,chip_enable = <&pio 26 0>;
+	Adsemicon,fw_name = "almf04/almf04_2CH_V2.04T.fw";
+};

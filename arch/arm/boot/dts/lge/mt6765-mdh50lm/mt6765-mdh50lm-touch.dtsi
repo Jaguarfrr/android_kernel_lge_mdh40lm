@@ -1,0 +1,181 @@
+/*
+ * LG Electronics MT6765 HDK touch device tree source
+ *
+ * Copyright (c) 2018 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+
+&i2c0 {
+	clock-frequency = <400000>;
+	mediatek,use-open-drain;
+
+	sw49110@28 {
+		compatible = "lge,sw49110";
+		status = "ok";
+
+		reg = <0x28>;
+
+		/* GPIOs */
+		interrupt-parent = <&pio>;
+		interrupts = <1 0x2002 1 0>;
+
+		/* IRQF_ONESHOT		0x00002000 */
+		/* IRQF_TRIGGER_FALLING		0x00000002 */
+		/* IRQF_NO_SUSPEND		0x00004000 */
+
+		reset-gpio = <&pio 164 0x00>;
+		irq-gpio = <&pio 1 0x2002>;
+		irqflags = <0x2002>;
+
+		pinctrl-names = "default", "touch_pin_active", "touch_pin_sleep";	/* Touch GPIO pin name setting */
+		pinctrl-0 = <&ts_pin_default>;
+		pinctrl-1 = <&ts_pin_active>;		/* Touch GPIO pin active setting */
+		pinctrl-2 = <&ts_pin_suspend>;		/* Touch GPIO pin suspend setting */
+
+		//vdd-gpio = <&eintc 3 0x0>;  /* ???? 3 : ph2 3.3v/l5 mipi 1.2v */
+		//vio-gpio = <&eintc 63 0x0>; /* ???? 63 : 1.8v io*/
+
+		/* Caps  */
+		max_x = <1079>;
+		max_y = <2459>;
+		max_pressure = <0xff>;
+		max_width = <15>;
+		max_orientation = <90>;
+		max_id = <10>;
+
+		/* role */
+		hw_reset_delay = <210>;
+		sw_reset_delay = <90>;
+		use_lpwg = <1>;
+		use_lpwg_test = <1>;
+		hide_coordinate = <1>;
+
+		/* firmware */
+		use_fw_upgrade = <1>;
+		use_firmware = <0>;
+
+		fw_image = "touch/mdh50lm/lgsiw/T0W68DH5_v1.03.img", "touch/mdh50lm/lgsiw/B0W68DH5_v1.02.img";
+		panel_spec = "touch/mdh50lm/lgsiw/dh50_tianma_limit.txt", "touch/mdh50lm/lgsiw/dh50_boe_limit.txt";
+		panel_spec_mfts_folder = "touch/mdh50lm/lgsiw/dh50_tianma_limit_mfts.txt", "touch/mdh50lm/lgsiw/dh50_boe_limit_mfts.txt";
+
+		/* Performance Test */
+		test_jig_size = <6>;
+		use_perf_test = <1>;
+		test_delay = <8>;
+		test_pressure = <50>;
+		test_width = <100>;
+		click_test_x = <135>;
+		click_test_y = <526>;
+		v_drag_test_x = <108>;
+		v_drag_test_start_y = <1388>;
+		v_drag_test_end_y = <771>;
+		h_drag_test_start_x = <848>;
+		h_drag_test_end_x = <231>;
+		h_drag_test_y = <1512>;
+	};
+
+	sw49107@28 {
+		compatible = "lge,sw49107";
+		status = "disable";
+
+		reg = <0x28>;
+
+		/* GPIOs */
+		interrupt-parent = <&pio>;
+		interrupts = <1 0x2002 1 0>;
+
+		/* IRQF_ONESHOT		0x00002000 */
+		/* IRQF_TRIGGER_FALLING		0x00000002 */
+		/* IRQF_NO_SUSPEND		0x00004000 */
+
+		reset-gpio = <&pio 164 0x00>;
+		irq-gpio = <&pio 1 0x2002>;
+		irqflags = <0x2002>;
+
+		pinctrl-names = "default", "touch_pin_active", "touch_pin_sleep";	/* Touch GPIO pin name setting */
+		pinctrl-0 = <&ts_pin_default>;
+		pinctrl-1 = <&ts_pin_active>;		/* Touch GPIO pin active setting */
+		pinctrl-2 = <&ts_pin_suspend>;		/* Touch GPIO pin suspend setting */
+
+		//vdd-gpio = <&eintc 3 0x0>;  /* ???? 3 : ph2 3.3v/l5 mipi 1.2v */
+		//vio-gpio = <&eintc 63 0x0>; /* ???? 63 : 1.8v io*/
+
+		/* Caps */
+		max_x = <1079>;
+		max_y = <2159>;
+		max_pressure = <0xff>;
+		max_width = <15>;
+		max_orientation = <90>;
+		max_id = <10>;
+
+		/* role */
+		hw_reset_delay = <210>;
+		sw_reset_delay = <90>;
+		use_lpwg = <1>;
+		use_lpwg_test = <1>;
+		hide_coordinate = <1>;
+
+		/* firmware */
+		use_fw_upgrade = <1>;
+        use_firmware = <0>;
+
+		fw_image = "touch/mdh50lm/lgsic/L1W62CV7AS_V1_01.img", "touch/mdh50lm/lgsic/T1W62CV7AS_V1_02.img";
+		panel_spec = "touch/mdh50lm/lgsic/cv7as_limit.txt", "touch/mdh50lm/lgsic/cv7as_tovis_limit.txt";
+		panel_spec_mfts_folder = "touch/mdh50lm/lgsic/cv7as_limit_mfts.txt", "touch/mdh50lm/lgsic/cv7as_tovis_limit_mfts.txt";
+
+		/* Performance Test */
+		test_jig_size = <6>;
+		use_perf_test = <1>;
+		test_delay = <8>;
+		test_pressure = <50>;
+		test_width = <100>;
+		click_test_x = <135>;
+		click_test_y = <526>;
+		v_drag_test_x = <108>;
+		v_drag_test_start_y = <1388>;
+		v_drag_test_end_y = <771>;
+		h_drag_test_start_x = <848>;
+		h_drag_test_end_x = <231>;
+		h_drag_test_y = <1512>;
+	};
+};
+
+/* TOUCH start */
+&touch {
+	status = "disabled";
+};
+
+/* touch gpio start */
+&pio {
+	ts_pin_default: ts_default {
+	};
+
+	ts_pin_active: ts_active {
+		pins_cmd0_dat {
+			pinmux = <PINMUX_GPIO1__FUNC_GPIO1>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+		pins_cmd1_dat {
+			pinmux = <PINMUX_GPIO164__FUNC_GPIO164>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	ts_pin_suspend: ts_suspend {
+		pins_cmd0_dat {
+			pinmux = <PINMUX_GPIO1__FUNC_GPIO1>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+		pins_cmd1_dat {
+			pinmux = <PINMUX_GPIO164__FUNC_GPIO164>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+};
+/* touch gpio end */
+/* TOUCH end */

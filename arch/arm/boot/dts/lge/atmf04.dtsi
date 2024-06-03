@@ -1,0 +1,19 @@
+/*
+ * LG Electronics atmf04 input device tree source
+ *
+ * Copyright (c) 2017 LG Electronics Co., Ltd.
+ *              http://www.lge.com
+ *
+ */
+sar_controller: atmf04@5a {
+	compatible = "adsemicon,atmf04";
+	reg = <0x5a>;
+	status = "okay";
+	interrupt-parent = <&pio>;
+	interrupts = <0 8 IRQ_TYPE_EDGE_FALLING>;
+
+	Adsemicon,irq-gpio = <&pio 15 0>;
+	Adsemicon,chip_enable = <&pio 26 0>;
+	Adsemicon,InputPinsNum = <2>;
+	Adsemicon,fw_name = "atmf04/atmf04_2CH_V0.50.fw";
+};

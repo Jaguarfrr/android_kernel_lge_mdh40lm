@@ -1,0 +1,151 @@
+/*
+ * Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&mt6370_pmu {
+	ldo {
+		mt_pmic_ldo_vout_reg: mt6370_ldo {
+			regulator-name = "touch-vcl";
+			regulator-min-microvolt = <2800000>;
+			regulator-max-microvolt = <3000000>;
+		};
+	};
+};
+
+
+&i2c0 {
+	clock-frequency = <400000>;
+	mediatek,use-open-drain;
+	cap_touch@5d {
+		status = "disabled";
+	};
+	focaltech,ft5446@38 {
+		compatible = "focaltech,ft5446";
+		status = "ok";
+
+		reg = <0x38>;
+		interrupt-parent = <&pio>;
+		interrupts = <1 0x2002 1 0>;
+		irqflags = <0x2002>;
+ 
+		reset-gpio = <&pio 164 0x00>;
+		irq-gpio = <&pio 1 0x2002>;
+		//vcl-gpio = <&pio 27 0x00>;	/* 2.8v - VDD */
+		//vdd-gpio = <&pio 42 0x00>;    /* 1.8v - IOVCC */
+
+		/* IRQF_ONESHOT		0x00002000 */
+		/* IRQF_TRIGGER_FALLING		0x00000002 */
+		/* IRQF_NO_SUSPEND		0x00004000 */
+
+		pinctrl-names = "default", "touch_pin_active", "touch_pin_sleep";	/* Touch GPIO pin name setting */
+		pinctrl-0 = <&ts_pin_default>;
+		pinctrl-1 = <&ts_pin_active>;		/* Touch GPIO pin active setting */
+		pinctrl-2 = <&ts_pin_suspend>;		/* Touch GPIO pin suspend setting */
+
+		/*Caps*/
+		max_x = <719>;
+		max_y = <1520>;
+		max_pressure = <0xff>;
+		max_width_major = <15>;
+		max_width_minor = <15>;
+		max_orientation = <1>;
+		max_id = <10>;
+		sw_reset_delay = <200>;
+		hw_reset_delay = <200>;
+
+		/* Role */
+		use_lpwg = <1>;
+		use_lpwg_test = <1>;
+		hide_coordinate = <1>;
+
+		/* firmware & panel_spec path */
+		use_fw_upgrade = <1>;
+
+		fw_image = "touch/dh5/focaltech/FT5446_Pramboot_V1.1_20160425.bin",
+			   "touch/dh5/focaltech/LGE_DH5_FT5446Q03_V0.12_V0x0C_20200515_all.bin";
+
+		panel_spec = "touch/dh5/focaltech/dh5_limit.txt";
+		panel_spec_mfts_folder = "touch/dh5/focaltech/dh5_limit_mfts.txt";
+
+		/* Performance Test */
+		use_perf_test = <1>;
+		test_delay = <16>;
+		test_pressure = <50>;
+		test_width = <100>;
+		test_jig_size = <8>;
+		click_test_x = <90>;
+		click_test_y = <410>;
+		v_drag_test_x = <72>;
+		v_drag_test_start_y = <971>;
+		v_drag_test_end_y = <548>;
+		h_drag_test_start_x = <571>;
+		h_drag_test_end_x = <148>;
+		h_drag_test_y = <1064>;
+
+		/* ft8006m specific */
+		//vdd-supply = <&pm8916_l17>;
+		//vcc_i2c-supply = <&pm8916_l6>;
+		focaltech,name = "fts";
+		focaltech,family-id = <0x54>;
+		//focaltech,reset-gpio = <&msmgpio 16 0x00>;
+		//focaltech,irq-gpio =<&msm_gpio 13 0x00>;
+		//focaltech,id1-gpio = <&msm_gpio 109 0x00>;
+		//focaltech,id2-gpio = <&msm_gpio 114 0x00>;
+		//focaltech,id3-gpio = <&msm_gpio 121 0x00>;
+		focaltech,display-coords = <0 0 480 854>;
+		focaltech,panel-coords = <0 0 1080 2000>;
+		focaltech,button-map= <70 150 907>;
+		focaltech,no-force-update;
+		focaltech,i2c-pull-up;
+		focaltech,group-id = <1>;
+		focaltech,hard-reset-delay-ms = <20>;
+		focaltech,soft-reset-delay-ms = <150>;
+		focaltech,num-max-touches = <10>;
+		focaltech,fw-name = "FT_Upgrade_App.i";
+		focaltech,fw-delay-aa-ms = <50>;
+		focaltech,fw-delay-55-ms = <30>;
+		focaltech,fw-upgrade-id1 = <0x79>;
+		focaltech,fw-upgrade-id2 = <0x03>;
+		focaltech,fw-delay-readid-ms = <10>;
+		focaltech,fw-delay-era-flsh-ms = <2000>;
+	};
+
+
+};
+
+
+&touch {
+	status = "disabled";
+};
+
+/* touch gpio start */
+&pio {
+	ts_pin_default: ts_default {
+	};
+
+	ts_pin_active: ts_active {
+		pins_cmd0_dat {
+			pinmux = <PINMUX_GPIO1__FUNC_GPIO1>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	ts_pin_suspend: ts_suspend {
+		pins_cmd0_dat {
+			pinmux = <PINMUX_GPIO1__FUNC_GPIO1>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+};
+/* touch gpio end */

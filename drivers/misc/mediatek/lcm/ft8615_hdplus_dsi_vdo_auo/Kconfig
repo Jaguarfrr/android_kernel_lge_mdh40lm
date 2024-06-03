@@ -1,0 +1,3 @@
+config FT8615_HDPLUS_DSI_VDO_AUO
+    bool "Enable AUO FT8615 INCELL HDPLUS panel for DH35"
+    default n
