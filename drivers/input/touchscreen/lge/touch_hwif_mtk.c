@@ -375,7 +375,7 @@ int touch_check_boot_mode(struct device *dev)
 	/* 2 = RECOVERY_BOOT, 15 == CHARGERLOGO_BOOT, defined only in LK   */
 	boot_mode = get_boot_mode();
 	 if (boot_mode == RECOVERY_BOOT) {
-		ret = TOUCH_RECOVERY_MODE;
+		ret = TOUCH_NORMAL_BOOT;
 		return ret;
 #if defined(CONFIG_LGE_PM_CHARGERLOGO)
 	} else if (boot_mode == CHARGER_BOOT) {
